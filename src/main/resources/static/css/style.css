@@ -1,0 +1,52 @@
+header {
+    height:100px;
+    background-color:plum;
+}
+
+.contents {
+    height:600px;
+}
+
+.sign-in-box {
+    height:300px;
+    border: solid 1px;
+    border-color: plum;
+    border-radius: 10px;
+}
+
+.sign-up-box {
+    height:450px;
+    border: solid 1px;
+    border-color: plum;
+    border-radius: 10px;
+}
+
+.sign-in-btn {
+    background-color: plum;
+}
+
+.sign-up-btn {
+    background-color:thistle;
+}
+
+footer {
+    background-color:ghostwhite;
+}
+
+.table {
+    font-size: 12px;
+}
+
+.duplicateIdBtn {
+    white-space: nowrap;
+    background-color: plum;
+}
+
+.input-box {
+    font-size:12px;
+}
+
+.log-in, .log-in:hover {
+    color:black;
+    text-decoration: none;
+}
