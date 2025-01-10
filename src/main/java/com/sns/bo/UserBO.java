@@ -1,0 +1,37 @@
+package com.sns.bo;
+
+import com.sns.common.EncryptUtils;
+import com.sns.entity.UserEntity;
+import com.sns.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class UserBO {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    // input: loginId
+    // output: UserEntity or null
+    public UserEntity getUserEntityByLoginId(String loginId) {
+         return userRepository.findByLoginId(loginId).orElse(null);
+    }
+
+    // input: 4개 파라미터
+    // output: UserEntity or boolean
+    public boolean addUser(String loginId, String password, String name, String email) {
+        String hashedPassword = EncryptUtils.md5(password);
+
+        UserEntity user =userRepository.save(
+                UserEntity.builder()
+                        .loginId(loginId)
+                        .password(hashedPassword)
+                        .name(name)
+                        .email(email)
+                        .build()
+        );
+
+        return user == null ? false : true;
+    }
+}
