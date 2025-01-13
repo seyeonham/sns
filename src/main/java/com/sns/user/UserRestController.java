@@ -2,6 +2,7 @@ package com.sns.user;
 
 import com.sns.bo.UserBO;
 import com.sns.entity.UserEntity;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,6 +54,31 @@ public class UserRestController {
             result.put("error_message", "회원가입에 실패했습니다.");
         }
 
+        return result;
+    }
+
+    @PostMapping("/sign-in")
+    public Map<String, Object> signIn(
+            @RequestParam("loginId") String loginId,
+            @RequestParam("password") String password,
+            HttpSession session
+    ) {
+        // db select
+        UserEntity user = userBO.getUserEntityByLoginIdPassword(loginId, password);
+
+        // response
+        Map<String, Object> result = new HashMap<>();
+        if (user != null) {
+            session.setAttribute("userId", user.getId());
+            session.setAttribute("userLoginId", user.getLoginId());
+            session.setAttribute("userName", user.getName());
+
+            result.put("code", 200);
+            result.put("result", "성공");
+        } else {
+            result.put("code", 300);
+            result.put("error_message", "아이디나 비밀번호가 틀렸습니다.");
+        }
         return result;
     }
 }

@@ -4,10 +4,15 @@
 
   <th:block th:fragment="headerFragment">
     <header class="d-flex align-items-center justify-content-between px-5">
-      <h1>Ostagram</h1>
-      <div>
-        <span>00님 안녕하세요</span>
-        <a href="#" class="log-in">로그아웃</a>
+      <h1><a href="/timeline" class="main-logo">Ostagram</a></h1>
+      <!-- 로그인 시 -->
+      <div th:if="${session.userName} != null">
+        <span th:text="|${session.userName}님 안녕하세요|">00님 안녕하세요</span>
+        <a href="/user/sign-out" class="log-in">로그아웃</a>
+      </div>
+      <!-- 비로그인 시 -->
+      <div th:unless="${session.userName} != null">
+        <a href="/user/sign-in-view" class="log-in">로그인</a>
       </div>
     </header>
   </th:block>

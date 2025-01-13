@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html 
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/defaultLayout}">
+<th:block layout:fragment="content">
+<section class="contents d-flex justify-content-center">
+    <div class="timeline bg-warning d-flex justify-content-center">
+        <div class="posting mt-3">
+            <textarea class="w-100" rows="4">내용을 입력해주세요.</textarea>
+            <div class="d-flex justify-content-between">
+                <img src="image/image_icon.png" width="30" id="postingImage">
+                <button id="uploadBtn" class="btn">업로드</button>
+            </div>
+        </div>
+    </div>
+</section>
+</th:block>

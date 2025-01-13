@@ -50,3 +50,30 @@ footer {
     color:black;
     text-decoration: none;
 }
+
+.main-logo, .main-logo:hover {
+    color:black;
+    text-decoration: none;
+}
+
+.timeline {
+    width:1000px;
+}
+
+.posting {
+    width:800px;
+    height:130px;
+    border: solid 1px;
+    border-radius: 10px;
+    border-color: gray;
+}
+
+textarea {
+    border:none;
+    border-radius:10px;
+}
+
+#uploadBtn {
+    background-color: plum;
+    size:5px;
+}
