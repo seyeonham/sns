@@ -56,13 +56,13 @@ footer {
     text-decoration: none;
 }
 
-.timeline {
+.contents-box {
     width:1000px;
 }
 
-.posting {
+.write-box {
     width:800px;
-    height:130px;
+    height:150px;
     border: solid 1px;
     border-radius: 10px;
     border-color: gray;
@@ -76,4 +76,13 @@ textarea {
 #uploadBtn {
     background-color: plum;
     size:5px;
+}
+
+.post-bar {
+    background-color:lightgray;
+}
+
+.comment-btn {
+    white-space: nowrap;
+    background-color: plum;
 }
