@@ -22,6 +22,9 @@ public class TimelineController {
     public String timeline(Model model, HttpSession session) {
         List<PostEntity> postList = postBO.getPostList();
         model.addAttribute("postList", postList);
+
+        // + 댓글
+
         return "timeline/timeline";
     }
 

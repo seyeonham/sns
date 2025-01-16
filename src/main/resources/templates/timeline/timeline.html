@@ -6,7 +6,7 @@
 <th:block layout:fragment="content">
     <section class="contents d-flex justify-content-center">
         <div class="contents-box">
-            <div class="d-flex justify-content-center">
+            <div th:if="${session.userId} != null" class="d-flex justify-content-center">
                 <div class="write-box mt-3">
                     <textarea id="content" class="w-100" rows="4" placeholder="내용을 입력해주세요."></textarea>
                     <div class="d-flex justify-content-between mx-2">
@@ -126,18 +126,69 @@
 
             // 게시버튼 - 글쓰기
             $("#uploadBtn").on("click", function() {
-                let content = $("#content").val().trim();
                 // 로그인이 되어있는지 검사
-                
+
                 // 내용 비필수
+                let content = $("#content").val();
+                console.log(content);
 
                 // 이미지 필수
+                let fileName = $("#file").val();
+                if (!fileName) {
+                    alert("이미지를 업로드 해주세요.");
+                    return;
+                }
 
                 // 확장자 체크
+                // alert("파일이 있다.");
+                // C:\fakepath\강아지.jpg
+                let extension = fileName.split(".").pop().toLowerCase();
+                console.log(extension);
+
+                if ($.inArray(extension, ["jpg", "png", "gif"]) == -1) {
+                    alert("이미지 파일만 업로드할 수 있습니다.");
+                    $("#file").val(""); // 파일을 비운다.
+                    $("#fileName").text(""); // 보이는 파일명도 초기화
+                    return;
+                }
 
                 // 폼태그 만들기
+                let formData = new FormData();
+                formData.append("content", content);
+                formData.append("file", $("#file")[0].files[0]);
+                // $("#file")[0]은 첫번째 input file 태그를 의미, files[0]는 업로드된 첫번째
 
                 // AJAX form 전송
+                $.ajax({
+                    // request
+                    type: "post"
+                    , url: "/post/create"
+                    , data: formData
+                    , processData: false // 파일 업로드를 위한 필수 설정
+                    , contentType: false // 파일 업로드를 위한 필수 설정
+                    , enctype: "multipart/form-data" // 파일 업로드를 위한 필수 설정
+
+                    // response
+                    , success:function(data) {
+                        if (data.code == 200) {
+                            alert("글 작성이 완료되었습니다.");
+                            location.reload();
+                        } else if (data.code = 403) {
+                            alert(data.error_message);
+                            location.href = "/user/sign-in-view";
+                        } else {
+                            alert(data.error_message);
+                        }
+                    }
+                    , error:function(e) {
+                        alert("글을 저장하는데 실패했습니다. 관리자에게 문의해주세요.");
+                    }
+                });
+            });
+
+            // 댓글 쓰기 버튼
+            $(".comment-btn").on("click", function() {
+                // alert("댓글");
             });
         });
     </script>
