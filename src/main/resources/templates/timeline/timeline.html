@@ -76,8 +76,8 @@
 
                         <!-- 댓글 쓰기 -->
                         <div class="comment-write d-flex border-top mt-2">
-                            <input type="text" class="comment-input form-control border-0 mr-2" placeholder="댓글을 입력해주세요.">
-                            <button type="button" class="comment-btn btn btn-light">게시</button>
+                            <input type="text" th:id="${post.id}" class="comment-input form-control border-0 mr-2" placeholder="댓글을 입력해주세요.">
+                            <button type="button" th:id="${post.id}" class="comment-btn btn btn-light">게시</button>
                         </div>
                     </div> <!-- 댓글 끝 -->
                 </div>
@@ -189,6 +189,49 @@
             // 댓글 쓰기 버튼
             $(".comment-btn").on("click", function() {
                 // alert("댓글");
+                let btnId = $(this).attr("id");
+                console.log(btnId);
+
+                let commentId = null;
+                $(".comment-input").filter(function() {
+                    // console.log($(this).attr("id"));
+                    if ($(this).attr("id") == btnId) {
+                        commentId = btnId;
+                    }
+                });
+
+                console.log(commentId);
+
+                let comment = $("#" + commentId).val();
+                console.log(comment);
+
+                // validation
+                if (!comment) {
+                    alert("댓글을 입력하세요.");
+                    return;
+                }
+
+                $("#" + commentId).val("");
+
+                // ajax
+                $.ajax({
+                    // request
+                    type:"post"
+                    , url:"/comment/create"
+                    , data:{"postId":btnId, "content":comment}
+
+                    // response
+                    , success:function(data) {
+                        if (data.code == 200) {
+                            location.reload();
+                        } else {
+                            alert(data.error_message);
+                        }
+                    }
+                    , error:function(e) {
+                        alert("댓글을 작성하는데 실패했습니다. 관리자에게 문의해주세요.");
+                    }
+                });
             });
         });
     </script>

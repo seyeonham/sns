@@ -16,7 +16,7 @@ public class CommentRestController {
     private final CommentBO commentBO;
 
     // TODO Post로 바꿀 예정
-    @GetMapping ("/create")
+    @PostMapping ("/create")
     public Map<String, Object> create(
             @RequestParam("content") String content,
             @RequestParam("postId") int postId,
