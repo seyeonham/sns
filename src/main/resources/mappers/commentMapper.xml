@@ -20,4 +20,16 @@
             , NOW()
         )
     </insert>
+
+    <select id="selectCommentByPostId" resultType="map">
+        SELECT
+            `id`
+            ,`postId`
+            ,`userId`
+            ,`content`
+            ,`createdAt`
+            ,`updatedAt`
+        FROM
+            `comment`
+    </select>
 </mapper>

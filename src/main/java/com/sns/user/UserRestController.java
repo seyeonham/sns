@@ -1,7 +1,7 @@
 package com.sns.user;
 
-import com.sns.bo.UserBO;
-import com.sns.entity.UserEntity;
+import com.sns.user.bo.UserBO;
+import com.sns.user.entity.UserEntity;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

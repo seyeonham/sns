@@ -1,8 +1,8 @@
-package com.sns.bo;
+package com.sns.user.bo;
 
 import com.sns.common.EncryptUtils;
-import com.sns.entity.UserEntity;
-import com.sns.repository.UserRepository;
+import com.sns.user.entity.UserEntity;
+import com.sns.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +26,10 @@ public class UserBO {
 
         // db select
         return userRepository.findByLoginIdAndPassword(loginId, hashedPassword).orElse(null);
+    }
+
+    public UserEntity getUserEntityById(int id) {
+        return userRepository.findById(id).orElse(null);
     }
 
     // input: 4개 파라미터

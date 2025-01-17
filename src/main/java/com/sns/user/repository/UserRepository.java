@@ -1,6 +1,6 @@
-package com.sns.repository;
+package com.sns.user.repository;
 
-import com.sns.entity.UserEntity;
+import com.sns.user.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

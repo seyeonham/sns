@@ -51,11 +51,6 @@ footer {
     text-decoration: none;
 }
 
-.main-logo, .main-logo:hover {
-    color:black;
-    text-decoration: none;
-}
-
 .contents-box {
     width:1000px;
 }
@@ -82,7 +77,61 @@ textarea {
     background-color:lightgray;
 }
 
+.subscribe-btn {
+    border: solid 1px;
+    border-color:lightgray;
+    background-color:white;
+    border-radius:12px;
+}
+
+.unsubscribe-btn, .unsubscribe-btn:hover {
+    border: solid 1px;
+    border-color:gray;
+    background-color:gray;
+    border-radius:12px;
+    color:white;
+}
+
 .comment-btn {
     white-space: nowrap;
     background-color: plum;
+}
+
+/* dropdown */
+
+.dropdown-post {
+    position: relative;
+    display: inline-block;
+}
+
+.drop-post {
+    width: 200px;
+    padding : 10px;
+    background-color: plum;
+    border: none;
+    cursor: pointer;
+}
+
+.drop-post:hover .post-options{
+    display:block;
+}
+
+.post-options {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.post-options a {
+    color:black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.post-options a:hover {
+    background-color:lightgray;
 }

@@ -15,14 +15,20 @@ public class CommentRestController {
 
     private final CommentBO commentBO;
 
-    // TODO Post로 바꿀 예정
+    /**
+     * 댓글 작성
+     * @param content
+     * @param postId
+     * @param session
+     * @return
+     */
     @PostMapping ("/create")
     public Map<String, Object> create(
             @RequestParam("content") String content,
             @RequestParam("postId") int postId,
             HttpSession session
     ) {
-        // DB insert
+        // 로그인 여부
         Integer userId = (Integer)session.getAttribute("userId");
 
         Map<String, Object> result = new HashMap<>();
@@ -32,6 +38,7 @@ public class CommentRestController {
             return result;
         }
 
+        // DB insert
         int rowCount = commentBO.addComment(content, postId, userId);
 
         // 응답값

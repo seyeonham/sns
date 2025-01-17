@@ -1,8 +1,8 @@
-package com.sns.entity;
+package com.sns.subscribe.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.CurrentTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -12,23 +12,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 @Getter
-@Table(name = "user")
+@Table(name = "subscribe")
 @Entity
-public class UserEntity {
+public class SubscribeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "loginId")
-    private String loginId;
+    @Column(name = "userId")
+    private int userId;
 
-    private String password;
+    @Column(name = "subscribeUserId")
+    private int subscribeUserId;
 
-    private String name;
-
-    private String email;
-
-    @CreationTimestamp
+    @CurrentTimestamp
     @Column(name = "createdAt")
     private LocalDateTime createdAt;
 
