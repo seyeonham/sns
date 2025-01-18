@@ -4,18 +4,18 @@
 
   <th:block th:fragment="headerFragment">
     <header class="d-flex align-items-center justify-content-between pl-5">
-      <div class="dropdown-post">
-        <button class="drop-post"><h1>Ostagram</h1></button>
-        <div class="post-options">
-          <a href="/timeline/timeline">전체보기</a>
+      <div class="dropdown">
+        <button class="drop"><h1>Ostagram</h1></button>
+        <div th:if="${session.userName} != null" class="drop-options">
+          <a href="/timeline">전체보기</a>
           <a href="#">구독보기</a>
           <a href="#">좋아요한 게시물</a>
         </div>
       </div>
       <!-- 로그인 시 -->
-      <div th:if="${session.userName} != null" class="dropdown-post">
-        <button class="drop-post"><span th:text="|${session.userName}님|"></span></button>
-        <div class="post-options">
+      <div th:if="${session.userName} != null" class="dropdown">
+        <button class="drop"><span th:text="|${session.userName}님|"></span></button>
+        <div class="drop-options">
           <a href="#">내 글 보기</a>
           <a href="#">정보 수정</a>
           <a href="/user/sign-out">로그아웃</a>
@@ -23,7 +23,7 @@
       </div>
       <!-- 비로그인 시 -->
       <div th:unless="${session.userName} != null">
-        <a href="/user/sign-in-view" class="log-in">로그인</a>
+        <a href="/user/sign-in-view" class="log-in pr-5">로그인</a>
       </div>
     </header>
   </th:block>

@@ -99,19 +99,19 @@ textarea {
 
 /* dropdown */
 
-.dropdown-post {
+.dropdown {
     position: relative;
     display: inline-block;
 }
 
-.drop-post {
+.drop {
     width: 200px;
     background-color: plum;
     border: none;
     cursor: pointer;
 }
 
-.post-options {
+.drop-options {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
@@ -120,17 +120,17 @@ textarea {
     z-index: 1;
 }
 
-.dropdown-post:hover .post-options {
+.dropdown:hover .drop-options {
     display:block;
 }
 
-.post-options a {
+.drop-options a {
     color:black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
 }
 
-.post-options a:hover {
+.drop-options a:hover {
     background-color:lightgray;
 }
