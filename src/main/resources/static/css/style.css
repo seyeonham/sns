@@ -106,14 +106,9 @@ textarea {
 
 .drop-post {
     width: 200px;
-    padding : 10px;
     background-color: plum;
     border: none;
     cursor: pointer;
-}
-
-.drop-post:hover .post-options{
-    display:block;
 }
 
 .post-options {
@@ -123,6 +118,10 @@ textarea {
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
+}
+
+.dropdown-post:hover .post-options {
+    display:block;
 }
 
 .post-options a {

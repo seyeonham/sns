@@ -37,4 +37,13 @@ public class TimelineController {
         return "timeline/timeline";
     }
 
+
+    @GetMapping("/my-post-view")
+    public String myPostView(HttpSession session) {
+
+        Integer userId = (Integer)session.getAttribute("userId");
+
+        return "";
+    }
+
 }
