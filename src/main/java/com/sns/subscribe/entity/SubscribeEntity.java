@@ -1,5 +1,7 @@
 package com.sns.subscribe.entity;
 
+
+
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CurrentTimestamp;
@@ -19,11 +21,14 @@ public class SubscribeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "userId")
-    private int userId;
+    @Column(name = "fromUserId")
+    private int fromUserId;
 
-    @Column(name = "subscribeUserId")
-    private int subscribeUserId;
+    @Column(name = "toUserId")
+    private int toUserId;
+
+    @Column(name = "deleteYn")
+    private String deleteYn;
 
     @CurrentTimestamp
     @Column(name = "createdAt")

@@ -37,7 +37,7 @@ public class UserBO {
     public boolean addUser(String loginId, String password, String name, String email) {
         String hashedPassword = EncryptUtils.md5(password);
 
-        UserEntity user =userRepository.save(
+        UserEntity user = userRepository.save(
                 UserEntity.builder()
                         .loginId(loginId)
                         .password(hashedPassword)

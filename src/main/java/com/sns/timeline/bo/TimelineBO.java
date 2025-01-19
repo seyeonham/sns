@@ -2,6 +2,8 @@ package com.sns.timeline.bo;
 
 import com.sns.post.bo.PostBO;
 import com.sns.post.entity.PostEntity;
+import com.sns.subscribe.bo.SubscribeBO;
+import com.sns.subscribe.entity.SubscribeEntity;
 import com.sns.timeline.domain.CardDTO;
 import com.sns.user.bo.UserBO;
 import com.sns.user.entity.UserEntity;
@@ -18,6 +20,7 @@ public class TimelineBO {
 
     private final PostBO postBO;
     private final UserBO userBO;
+    private final SubscribeBO subscribeBO;
 
     // input: X
     // output: List<CardDTO>
@@ -35,6 +38,9 @@ public class TimelineBO {
             int userId = postEntity.getUserId();
             UserEntity user = userBO.getUserEntityById(userId);
             cardDTO.setUser(user);
+
+            List<SubscribeEntity> subscribeList = subscribeBO.getSubscribeByToUserId(userId);
+            cardDTO.setSubscribeList(subscribeList);
 
             // !!!!!!!!!!!!! list에 꼭 담기
             cardList.add(cardDTO);

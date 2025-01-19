@@ -31,11 +31,18 @@
                     <div class="post-bar p-2 d-flex justify-content-between">
                         <div>
                             <span class="font-weight-bold" th:text="${card.user.name}"></span>
-                            <span th:if="${session.userId} != null">
-                                <span th:if="${session.userId} != ${card.post.userId}">
-                                    <button type="button" class="btn subscribe-btn"><small>구독하기</small></button>
-                                    <button type="button" class="btn unsubscribe-btn"><small>구독중</small></button>
+                            <span th:if="${session.userId} != null and ${session.userId} != ${card.post.userId}">
+
+                                <span th:each="subscribe : ${card.subscribeList}">
+                                    <span th:if="${subscribe.fromUserId} == ${session.userId}">
+                                        <button type="button" class="btn subscribe-btn" th:if="${subscribe.deleteYn} == 'Y'" th:data-user-id="${card.post.userId}"><small>구독하기</small></button>
+                                        <button type="button" class="btn unsubscribe-btn" th:if="${subscribe.deleteYn} == 'N'" th:data-user-id="${card.post.userId}"><small>구독중</small></button>
+                                    </span>
+                                    <span th:unless="${subscribe.fromUserId} == ${session.userId}">
+                                        <button type="button" class="btn subscribe-btn" th:data-user-id="${card.post.userId}"><small>구독하기</small></button>
+                                    </span>
                                 </span>
+
                             </span>
                         </div>
                         <a href="#" class="more-btn">
@@ -238,6 +245,34 @@
                     }
                     , error:function(e) {
                         alert("댓글을 작성하는데 실패했습니다. 관리자에게 문의해주세요.");
+                    }
+                });
+            });
+
+            // 구독 or 해제 버튼
+            $(".subscribe-btn, .unsubscribe-btn").on("click", function() {
+                let toUserId = $(this).data("user-id");
+                // alert(userId);
+
+                $.ajax({
+                    // request
+                    type:"patch"
+                    , url:"/subscribe/user"
+                    , data:{"toUserId":toUserId}
+
+                    // response
+                    , success:function(data) {
+                        if (data.code == 200) {
+                            location.reload();
+                        } else if (data.code == 403) {
+                            alert(data.error_message);
+                            location.href = "/user/sign-in-view";
+                        } else {
+                            alert(data.error_message);
+                        }
+                    }
+                    , error:function(e) {
+                        alert("오류가 발생했습니다. 관리자에게 문의해주세요.");
                     }
                 });
             });
