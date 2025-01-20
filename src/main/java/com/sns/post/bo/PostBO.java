@@ -20,6 +20,10 @@ public class PostBO {
         return postRepository.findAllByOrderByIdDesc();
     }
 
+    public List<PostEntity> getPostListByUserId(int userId) {
+        return postRepository.findByUserIdOrderByIdDesc(userId);
+    }
+
     // input: content, file, userId, userLoginId
     // output: PostEntity or 파일 업로드 실패
     public PostEntity addPost(int userId, String userLoginId, MultipartFile file, String content) {

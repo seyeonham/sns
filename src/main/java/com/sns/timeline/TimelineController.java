@@ -34,8 +34,9 @@ public class TimelineController {
 
         // List<Comment> commentList = commentBO.getCommentByPostId();
         // model.addAttribute("commentList", commentList);
+        Integer fromUserId = (Integer)session.getAttribute("userId");
 
-        List<CardDTO> cardList = timelineBO.generateCardList();
+        List<CardDTO> cardList = timelineBO.generateCardList(fromUserId);
         model.addAttribute("cardList", cardList);
 
         return "timeline/timeline";
@@ -43,11 +44,21 @@ public class TimelineController {
 
 
     @GetMapping("/my-post-view")
-    public String myPostView(HttpSession session) {
+    public String myPostView(Model model, HttpSession session) {
 
-        Integer userId = (Integer)session.getAttribute("userId");
+        Integer myId = (Integer)session.getAttribute("userId");
+        if (myId == null) {
+            return "user/signIn";
+        }
 
-        return "";
+        List<CardDTO> myCardList = timelineBO.generateMyCardList(myId);
+        if (myCardList.size() > 0) {
+            model.addAttribute("myCardList", myCardList);
+        } else {
+            model.addAttribute("myCardList", null);
+        }
+
+        return "timeline/myPost";
     }
 
 }

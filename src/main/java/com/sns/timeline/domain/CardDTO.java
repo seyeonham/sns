@@ -21,5 +21,5 @@ public class CardDTO {
     // 좋아요 N개 -> 숫자
 
     // 구독, 구독해제
-    private List<SubscribeEntity> subscribeList;
+    private SubscribeEntity subscribe;
 }

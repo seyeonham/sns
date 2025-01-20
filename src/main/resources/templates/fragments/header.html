@@ -16,7 +16,7 @@
       <div th:if="${session.userName} != null" class="dropdown">
         <button class="drop"><span th:text="|${session.userName}님|"></span></button>
         <div class="drop-options">
-          <a href="#">내 글 보기</a>
+          <a href="/timeline/my-post-view">내 글 보기</a>
           <a href="#">정보 수정</a>
           <a href="/user/sign-out">로그아웃</a>
         </div>

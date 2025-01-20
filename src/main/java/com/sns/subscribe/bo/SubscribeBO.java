@@ -14,8 +14,8 @@ public class SubscribeBO {
 
     private final SubscribeRepository subscribeRepository;
 
-    public List<SubscribeEntity> getSubscribeByToUserId(int toUserId) {
-        return subscribeRepository.findByToUserId(toUserId);
+    public Optional<SubscribeEntity> getSubscribeByToUserIdFromUserId(int toUserId, int fromUserId) {
+        return subscribeRepository.findByToUserIdAndFromUserId(toUserId, fromUserId);
     }
 
     public SubscribeEntity updateSubscribe(int toUserId, int fromUserId) {

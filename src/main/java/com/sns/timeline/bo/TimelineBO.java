@@ -24,7 +24,7 @@ public class TimelineBO {
 
     // input: X
     // output: List<CardDTO>
-    public List<CardDTO> generateCardList() {
+    public List<CardDTO> generateCardList(Integer fromUserId) {
         List<CardDTO> cardList = new ArrayList<>();
 
         // 글 목록 가져옴
@@ -39,10 +39,30 @@ public class TimelineBO {
             UserEntity user = userBO.getUserEntityById(userId);
             cardDTO.setUser(user);
 
-            List<SubscribeEntity> subscribeList = subscribeBO.getSubscribeByToUserId(userId);
-            cardDTO.setSubscribeList(subscribeList);
+            SubscribeEntity subscribe = subscribeBO.getSubscribeByToUserIdFromUserId(userId, fromUserId).orElse(null);
+            cardDTO.setSubscribe(subscribe);
 
             // !!!!!!!!!!!!! list에 꼭 담기
+            cardList.add(cardDTO);
+        }
+
+        return cardList;
+    }
+
+    public List<CardDTO> generateMyCardList(int myId) {
+        List<CardDTO> cardList = new ArrayList<>();
+
+        // 글 목록 가져옴
+        List<PostEntity> myPostList = postBO.getPostListByUserId(myId);
+
+        for (PostEntity postEntity : myPostList) {
+            CardDTO cardDTO = new CardDTO();
+            cardDTO.setPost(postEntity);
+
+            int userId = postEntity.getUserId();
+            UserEntity user = userBO.getUserEntityById(userId);
+            cardDTO.setUser(user);
+
             cardList.add(cardDTO);
         }
 
