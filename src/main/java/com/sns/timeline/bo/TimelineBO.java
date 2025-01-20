@@ -108,20 +108,54 @@ public class TimelineBO {
                 int toUserId = subscribeEntity.getToUserId();
                 if (toUserId == postUserId) {
                     cardDTO.setPost(postEntity);
-                } else {
-                    return;
+
+                    // 글쓴이
+                    int userId = postEntity.getUserId();
+                    UserEntity user = userBO.getUserEntityById(userId);
+                    cardDTO.setUser(user);
+
+                    // 댓글 N개
+                    int postId = postEntity.getId();
+                    List<CommentDTO> commentList = commentBO.generateCommentListByPostId(postId);
+                    cardDTO.setCommentList(commentList);
+
+                    // 구독
+                    SubscribeEntity subscribe = subscribeBO.getSubscribeByToUserIdFromUserId(userId, fromUserId).orElse(null);
+                    cardDTO.setSubscribe(subscribe);
+
+                    cardList.add(cardDTO);
                 }
             }
+        }
+
+        return cardList;
+    }
+
+    public List<CardDTO> generateUserCardList(int userId, int fromUserId) {
+        List<CardDTO> cardList = new ArrayList<>();
+
+        // 글 목록 가져옴
+        List<PostEntity> myPostList = postBO.getPostListByUserId(userId);
+
+        for (PostEntity postEntity : myPostList) {
+            CardDTO cardDTO = new CardDTO();
+
+            // 글 1개
+            cardDTO.setPost(postEntity);
 
             // 글쓴이
-            int userId = postEntity.getUserId();
-            UserEntity user = userBO.getUserEntityById(userId);
+            int postUserId = postEntity.getUserId();
+            UserEntity user = userBO.getUserEntityById(postUserId);
             cardDTO.setUser(user);
 
             // 댓글 N개
             int postId = postEntity.getId();
             List<CommentDTO> commentList = commentBO.generateCommentListByPostId(postId);
             cardDTO.setCommentList(commentList);
+
+            // 구독
+            SubscribeEntity subscribe = subscribeBO.getSubscribeByToUserIdFromUserId(userId, fromUserId).orElse(null);
+            cardDTO.setSubscribe(subscribe);
 
             cardList.add(cardDTO);
         }

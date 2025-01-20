@@ -30,7 +30,9 @@
                     <!-- 글쓴이, 더보기버튼 바 -->
                     <div class="post-bar p-2 d-flex justify-content-between">
                         <div>
-                            <span class="font-weight-bold" th:text="${card.user.name}"></span>
+                            <a class="user-btn" th:href="|/timeline/user-post-view?userId=${card.post.userId}|">
+                                <span class="font-weight-bold" th:text="${card.user.name}">글쓴이</span>
+                            </a>
                             <!-- 구독하기, 구독중 버튼 -->
                             <span th:if="${session.userId} != null and ${session.userId} != ${card.post.userId}">
                                 <span th:if="${card.subscribe} != null">
@@ -40,7 +42,6 @@
                                 <span th:if="${card.subscribe} == null">
                                     <button type="button" class="btn subscribe-btn" th:data-user-id="${card.post.userId}"><small>구독하기</small></button>
                                 </span>
-
                             </span>
                         </div>
                         <a href="#" class="more-btn">
@@ -63,7 +64,9 @@
 
                     <!-- 글 -->
                     <div class="card-post m-3">
-                        <span class="font-weight-bold" th:text="${card.user.name}">글쓴이</span>
+                        <a class="user-btn" th:href="|/timeline/user-post-view?userId=${card.post.userId}|">
+                            <span class="font-weight-bold" th:text="${card.user.name}">글쓴이</span>
+                        </a>
                         <span th:text="${card.post.content}">글 내용입니다!!!!</span>
                     </div>
 
@@ -78,7 +81,9 @@
                         <div class="card-comment m-1">
                             <div th:each="comment : ${card.commentList}">
                                 <div>
-                                    <span class="font-weight-bold" th:text="${comment.user.name}">댓글쓴이</span>
+                                    <a class="user-btn" th:href="|/timeline/user-post-view?userId=${comment.comment.userId}|">
+                                        <span class="font-weight-bold" th:text="${comment.user.name}">댓글쓴이</span>
+                                    </a>
                                     <span th:text="${comment.comment.content}">댓글 내용</span>
                                     <!-- 댓글 삭제(자신의 댓글만 가능) -->
                                     <a href="#" class="comment-del-btn" th:if="${session.userId} == ${comment.comment.userId}" th:data-user-id="${comment.comment.id}">

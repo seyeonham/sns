@@ -10,23 +10,13 @@
             <div class="timeline-box">
                 <!-- 글(카드) 반복 -->
 
-                <div class="card mt-3" th:each="subscribeCard : ${subscribeCardList}" th:if="${subscribeCardList} != null">
+                <div class="card mt-3" th:each="userCard : ${userCardList}" th:if="${userCardList} != null">
                     <!-- 글쓴이, 더보기버튼 바 -->
                     <div class="post-bar p-2 d-flex justify-content-between">
                         <div>
-                            <a class="user-btn" th:href="|/timeline/user-post-view?userId=${subscribeCard.post.userId}|">
-                                <span class="font-weight-bold" th:text="${subscribeCard.user.name}">글쓴이</span>
+                            <a class="user-btn" th:href="|/timeline/user-post-view?userId=${userCard.post.userId}|">
+                                <span class="font-weight-bold" th:text="${userCard.user.name}"></span>
                             </a>
-                            <!-- 구독하기, 구독중 버튼 -->
-                            <span th:if="${session.userId} != null and ${session.userId} != ${subscribeCard.post.userId}">
-                                <span th:if="${subscribeCard.subscribe} != null">
-                                    <button type="button" class="btn subscribe-btn" th:if="${subscribeCard.subscribe.deleteYn} == 'Y'" th:data-user-id="${subscribeCard.post.userId}"><small>구독하기</small></button>
-                                    <button type="button" class="btn unsubscribe-btn" th:if="${subscribeCard.subscribe.deleteYn} == 'N'" th:data-user-id="${subscribeCard.post.userId}"><small>구독중</small></button>
-                                </span>
-                                <span th:if="${subscribeCard.subscribe} == null">
-                                    <button type="button" class="btn subscribe-btn" th:data-user-id="${subscribeCard.post.userId}"><small>구독하기</small></button>
-                                </span>
-                            </span>
                         </div>
                         <a href="#" class="more-btn">
                             <img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
@@ -35,7 +25,7 @@
 
                     <!-- 본문 이미지 -->
                     <div class="card-img">
-                        <img th:src="${subscribeCard.post.imagePath}" class="w-100" alt="본문 이미지">
+                        <img th:src="${userCard.post.imagePath}" class="w-100" alt="본문 이미지">
                     </div>
 
                     <!-- 좋아요 -->
@@ -48,10 +38,10 @@
 
                     <!-- 글 -->
                     <div class="card-post m-3">
-                        <a class="user-btn" th:href="|/timeline/user-post-view?userId=${subscribeCard.post.userId}|">
-                            <span class="font-weight-bold" th:text="${subscribeCard.user.name}">글쓴이</span>
+                        <a class="user-btn" th:href="|/timeline/user-post-view?userId=${userCard.post.userId}|">
+                            <span class="font-weight-bold" th:text="${userCard.user.name}">글쓴이</span>
                         </a>
-                        <span th:text="${subscribeCard.post.content}">글 내용입니다!!!!</span>
+                        <span th:text="${userCard.post.content}">글 내용입니다!!!!</span>
                     </div>
 
                     <!-- 댓글 바 -->
@@ -63,8 +53,8 @@
                     <div class="card-comment-list m-2">
                         <!-- 댓글들 -->
                         <div class="card-comment m-1">
-                            <div th:each="comment : ${subscribeCard.commentList}">
-                                <div th:if="${subscribeCard.post.id} == ${comment.comment.postId}">
+                            <div th:each="comment : ${userCard.commentList}">
+                                <div th:if="${userCard.post.id} == ${comment.comment.postId}">
                                     <a class="user-btn" th:href="|/timeline/user-post-view?userId=${comment.comment.userId}|">
                                         <span class="font-weight-bold" th:text="${comment.user.name}">댓글쓴이</span>
                                     </a>
@@ -79,14 +69,14 @@
 
                         <!-- 댓글 쓰기 -->
                         <div class="comment-write d-flex border-top mt-2">
-                            <input type="text" th:id="|content${subscribeCard.post.id}|" class="comment-input form-control border-0 mr-2" placeholder="댓글을 입력해주세요.">
-                            <button type="button" th:data-post-id="${subscribeCard.post.id}" class="comment-btn btn btn-light">게시</button>
+                            <input type="text" th:id="|content${userCard.post.id}|" class="comment-input form-control border-0 mr-2" placeholder="댓글을 입력해주세요.">
+                            <button type="button" th:data-post-id="${userCard.post.id}" class="comment-btn btn btn-light">게시</button>
                         </div>
                     </div> <!-- 댓글 끝 -->
                 </div>
 
-                <div th:if="${subscribeCardList} == null">
-                    <h3 class="text-center mt-3">구독한 유저가 없습니다.</h3>
+                <div th:if="${userCardList} == null">
+                    <h3 class="text-center mt-3">작성한 게시물이 없습니다.</h3>
                 </div>
             </div>
         </div>
@@ -296,6 +286,12 @@
                         alert("댓글 삭제에 실패했습니다. 관리자에게 문의해주세요.");
                     }
                 });
+            });
+
+            // 한 명의 유저의 글만 보기
+            $(".user-btn").on("click", function() {
+                let userId = $(this).data("user-id");
+                location.href = "/timeline/user-post-view";
             });
         });
     </script>

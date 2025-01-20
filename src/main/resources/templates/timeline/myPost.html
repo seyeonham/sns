@@ -31,7 +31,9 @@
                     <!-- 글쓴이, 더보기버튼 바 -->
                     <div class="post-bar p-2 d-flex justify-content-between">
                         <div>
-                            <span class="font-weight-bold" th:text="${myCard.user.name}"></span>
+                            <a class="user-btn" th:href="|/timeline/user-post-view?userId=${myCard.post.userId}|">
+                                <span class="font-weight-bold" th:text="${myCard.user.name}"></span>
+                            </a>
                         </div>
                         <a href="#" class="more-btn">
                             <img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
@@ -53,7 +55,9 @@
 
                     <!-- 글 -->
                     <div class="card-post m-3">
-                        <span class="font-weight-bold" th:text="${myCard.user.name}">글쓴이</span>
+                        <a class="user-btn" th:href="|/timeline/user-post-view?userId=${myCard.post.userId}|">
+                            <span class="font-weight-bold" th:text="${myCard.user.name}">글쓴이</span>
+                        </a>
                         <span th:text="${myCard.post.content}">글 내용입니다!!!!</span>
                     </div>
 
@@ -68,10 +72,12 @@
                         <div class="card-comment m-1">
                             <div th:each="comment : ${myCard.commentList}">
                                 <div th:if="${myCard.post.id} == ${comment.comment.postId}">
-                                    <span class="font-weight-bold" th:text="${comment.user.name}">댓글쓴이</span>
+                                    <a class="user-btn" th:href="|/timeline/user-post-view?userId=${comment.comment.userId}|">
+                                        <span class="font-weight-bold" th:text="${comment.user.name}">댓글쓴이</span>
+                                    </a>
                                     <span th:text="${comment.comment.content}">댓글내용</span>
                                     <!-- 댓글 삭제(자신의 댓글만 가능) -->
-                                    <a href="#" class="comment-del-btn" th:if="${session.userId} == ${comment.comment.userId}">
+                                    <a href="#" class="comment-del-btn" th:if="${session.userId} == ${comment.comment.userId}" th:data-user-id="${comment.comment.id}">
                                         <img src="https://www.iconninja.com/files/603/22/506/x-icon.png" width="10" height="10">
                                     </a>
                                 </div>
@@ -87,7 +93,7 @@
                 </div>
 
                 <div th:if="${myCardList} == null">
-                    <h3 class="text-center mt-3">작성하신 게시물이 없습니다.</h3>
+                    <h3 class="text-center mt-3">작성한 게시물이 없습니다.</h3>
                 </div>
             </div>
         </div>
@@ -267,6 +273,42 @@
                         alert("오류가 발생했습니다. 관리자에게 문의해주세요.");
                     }
                 });
+            });
+
+            // 댓글 삭제 버튼
+            $(".comment-del-btn").on("click", function(e) {
+                e.preventDefault();
+
+                let commentId = $(this).data("user-id");
+                // alert(commentId);
+
+                $.ajax({
+                    // request
+                    type:"delete"
+                    , url:"/comment/delete"
+                    , data:{"id":commentId}
+
+                    // response
+                    , success:function(data) {
+                        if (data.code == 200) {
+                            location.reload();
+                        } else if (data.code == 403) {
+                            alert(data.error_message);
+                            location.href = "/user/sign-in-view";
+                        } else {
+                            alert(data.error_message);
+                        }
+                    }
+                    , error:function(e) {
+                        alert("댓글 삭제에 실패했습니다. 관리자에게 문의해주세요.");
+                    }
+                });
+            });
+
+            // 한 명의 유저의 글만 보기
+            $(".user-btn").on("click", function() {
+                let userId = $(this).data("user-id");
+                location.href = "/timeline/user-post-view";
             });
         });
     </script>

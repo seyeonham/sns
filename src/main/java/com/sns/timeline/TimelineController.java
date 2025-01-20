@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class TimelineController {
 
         Integer myId = (Integer)session.getAttribute("userId");
         if (myId == null) {
-            return "user/signIn";
+            return "redirect:user/sign-in-view";
         }
 
         List<CardDTO> myCardList = timelineBO.generateMyCardList(myId);
@@ -66,7 +67,7 @@ public class TimelineController {
 
         Integer fromUserId = (Integer)session.getAttribute("userId");
         if (fromUserId == null) {
-            return "user/signIn";
+            return "redirect:/user/sign-in-view";
         }
 
         List<CardDTO> subscribeCardList = timelineBO.generateSubscribeCardList(fromUserId);
@@ -77,6 +78,25 @@ public class TimelineController {
         }
 
         return "timeline/subscribePost";
+    }
+
+    @GetMapping("/user-post-view")
+    public String userPostView(Model model, HttpSession session,
+                               @RequestParam("userId") int userId) {
+
+        Integer fromUserId = (Integer)session.getAttribute("userId");
+        if (fromUserId == null) {
+            return "redirect:/user/sign-in-view";
+        }
+
+        List<CardDTO> userCardList = timelineBO.generateUserCardList(userId, fromUserId);
+        if (userCardList.size() > 0) {
+            model.addAttribute("userCardList", userCardList);
+        } else {
+            model.addAttribute("userCardList", null);
+        }
+
+        return "timeline/userPost";
     }
 
 }

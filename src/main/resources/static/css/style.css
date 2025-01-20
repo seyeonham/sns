@@ -12,6 +12,12 @@ header {
     text-decoration: none;
 }
 
+.user-btn, .user-btn:hover {
+    color:black;
+    text-decoration: none;
+    pointer:cursor;
+}
+
 .sign-in-box {
     height:300px;
     border: solid 1px;
