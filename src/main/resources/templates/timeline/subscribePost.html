@@ -6,32 +6,15 @@
 <th:block layout:fragment="content">
     <section class="contents d-flex justify-content-center">
         <div class="contents-box">
-            <div th:if="${session.userId} != null" class="d-flex justify-content-center">
-                <div class="write-box mt-3">
-                    <textarea id="content" class="w-100" rows="4" placeholder="내용을 입력해주세요."></textarea>
-                    <div class="d-flex justify-content-between mx-2">
-                        <div class="d-flex">
-                            <!-- file 태그를 숨겨두고 이미지를 클릭하면 파일을 클릭한 것과 같은 효과를 준다. -->
-                            <input type="file" id="file" accept=".jpg, .png, .gif" class="d-none">
-
-                            <!-- 이미지에 마우스 올리면 마우스 커서가 link로 변경 -->
-                            <a href="#" id="fileUploadBtn"><img width="35" src="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-image-512.png"></a>
-                            <div id="fileName" class="ml-2"></div>
-                        </div>
-                        <button id="uploadBtn" class="btn">업로드</button>
-                    </div>
-                </div>
-            </div>
-
             <!-- 타임라인 영역 -->
             <div class="timeline-box">
                 <!-- 글(카드) 반복 -->
 
-                <div class="card mt-3" th:each="myCard : ${myCardList}" th:if="${myCardList} != null">
+                <div class="card mt-3" th:each="subscribeCard : ${subscribeCardList}" th:if="${subscribeCardList} != null">
                     <!-- 글쓴이, 더보기버튼 바 -->
                     <div class="post-bar p-2 d-flex justify-content-between">
                         <div>
-                            <span class="font-weight-bold" th:text="${myCard.user.name}"></span>
+                            <span class="font-weight-bold" th:text="${subscribeCard.user.name}"></span>
                         </div>
                         <a href="#" class="more-btn">
                             <img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
@@ -40,7 +23,7 @@
 
                     <!-- 본문 이미지 -->
                     <div class="card-img">
-                        <img th:src="${myCard.post.imagePath}" class="w-100" alt="본문 이미지">
+                        <img th:src="${subscribeCard.post.imagePath}" class="w-100" alt="본문 이미지">
                     </div>
 
                     <!-- 좋아요 -->
@@ -53,8 +36,8 @@
 
                     <!-- 글 -->
                     <div class="card-post m-3">
-                        <span class="font-weight-bold" th:text="${myCard.user.name}">글쓴이</span>
-                        <span th:text="${myCard.post.content}">글 내용입니다!!!!</span>
+                        <span class="font-weight-bold" th:text="${subscribeCard.user.name}">글쓴이</span>
+                        <span th:text="${subscribeCard.post.content}">글 내용입니다!!!!</span>
                     </div>
 
                     <!-- 댓글 바 -->
@@ -66,8 +49,8 @@
                     <div class="card-comment-list m-2">
                         <!-- 댓글들 -->
                         <div class="card-comment m-1">
-                            <div th:each="comment : ${myCard.commentList}">
-                                <div th:if="${myCard.post.id} == ${comment.comment.postId}">
+                            <div th:each="comment : ${subscribeCardList.commentList}">
+                                <div th:if="${subscribeCard.post.id} == ${comment.comment.postId}">
                                     <span class="font-weight-bold" th:text="${comment.user.name}">댓글쓴이</span>
                                     <span th:text="${comment.comment.content}">댓글내용</span>
                                     <!-- 댓글 삭제(자신의 댓글만 가능) -->

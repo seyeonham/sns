@@ -9,5 +9,7 @@ import java.util.Optional;
 public interface SubscribeRepository extends JpaRepository<SubscribeEntity, Integer> {
     public List<SubscribeEntity> findByToUserId(int toUserId);
 
+    public List<SubscribeEntity> findByFromUserIdAndDeleteYn(int fromUserId, String deleteYn);
+
     public Optional<SubscribeEntity> findByToUserIdAndFromUserId(int toUserId, int fromUserId);
 }

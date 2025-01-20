@@ -7,6 +7,11 @@ header {
     min-height:500px;
 }
 
+.main-logo, .main-logo:hover {
+    color:black;
+    text-decoration: none;
+}
+
 .sign-in-box {
     height:300px;
     border: solid 1px;

@@ -18,6 +18,10 @@ public class SubscribeBO {
         return subscribeRepository.findByToUserIdAndFromUserId(toUserId, fromUserId);
     }
 
+    public List<SubscribeEntity> getSubscribeByFromUserId(int fromUserId, String deleteYn) {
+        return subscribeRepository.findByFromUserIdAndDeleteYn(fromUserId, deleteYn);
+    }
+
     public SubscribeEntity updateSubscribe(int toUserId, int fromUserId) {
         Optional<SubscribeEntity> existSubscribe =
                 subscribeRepository.findByToUserIdAndFromUserId(toUserId, fromUserId);

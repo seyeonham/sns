@@ -51,4 +51,29 @@ public class CommentRestController {
         }
         return result;
     }
+
+    @DeleteMapping("/delete")
+    public Map<String, Object> delete(
+            @RequestParam("id") int id,
+            HttpSession session
+    ) {
+
+        Integer userId = (Integer)session.getAttribute("userId");
+        Map<String, Object> result = new HashMap<>();
+        if (userId == null) {
+            result.put("code", 403);
+            result.put("error_message", "로그인을 해주세요.");
+            return result;
+        }
+
+        int rowCount = commentBO.deleteCommentById(id);
+        if (rowCount > 0) {
+            result.put("code", 200);
+            result.put("result", "성공");
+        } else {
+            result.put("code", 500);
+            result.put("error_message", "댓글 삭제에 실패했습니다.");
+        }
+        return result;
+    }
 }

@@ -5,10 +5,14 @@
   <th:block th:fragment="headerFragment">
     <header class="d-flex align-items-center justify-content-between pl-5">
       <div class="dropdown">
-        <button class="drop"><h1>Ostagram</h1></button>
+        <!-- 비로그인시 -->
+        <a href="/timeline" th:if="${session.userId} == null" class="main-logo"><h1>Ostagram</h1></a>
+
+        <!-- 로그인시 -->
+        <button class="drop" th:if="${session.userId} != null"><h1>Ostagram</h1></button>
         <div th:if="${session.userName} != null" class="drop-options">
           <a href="/timeline">전체보기</a>
-          <a href="#">구독보기</a>
+          <a href="/timeline/subscribe-post-view">구독보기</a>
           <a href="#">좋아요한 게시물</a>
         </div>
       </div>

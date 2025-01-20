@@ -1,5 +1,7 @@
 package com.sns.timeline.domain;
 
+import com.sns.comment.domain.Comment;
+import com.sns.comment.domain.CommentDTO;
 import com.sns.post.entity.PostEntity;
 import com.sns.subscribe.entity.SubscribeEntity;
 import com.sns.user.entity.UserEntity;
@@ -17,6 +19,7 @@ public class CardDTO {
     private UserEntity user;
 
     // 댓글 N개
+    private List<CommentDTO> commentList;
 
     // 좋아요 N개 -> 숫자
 

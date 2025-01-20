@@ -1,5 +1,7 @@
 package com.sns.timeline.bo;
 
+import com.sns.comment.bo.CommentBO;
+import com.sns.comment.domain.CommentDTO;
 import com.sns.post.bo.PostBO;
 import com.sns.post.entity.PostEntity;
 import com.sns.subscribe.bo.SubscribeBO;
@@ -21,6 +23,7 @@ public class TimelineBO {
     private final PostBO postBO;
     private final UserBO userBO;
     private final SubscribeBO subscribeBO;
+    private final CommentBO commentBO;
 
     // input: X
     // output: List<CardDTO>
@@ -33,14 +36,25 @@ public class TimelineBO {
         // 반복문 => PostEntity -> CardDTO     => 리스트에 넣는다.
         for (PostEntity postEntity : postList) {
             CardDTO cardDTO = new CardDTO();
+
+            // 글 1개
             cardDTO.setPost(postEntity);
 
+            // 글쓴이
             int userId = postEntity.getUserId();
             UserEntity user = userBO.getUserEntityById(userId);
             cardDTO.setUser(user);
 
-            SubscribeEntity subscribe = subscribeBO.getSubscribeByToUserIdFromUserId(userId, fromUserId).orElse(null);
-            cardDTO.setSubscribe(subscribe);
+            // 구독
+            if (fromUserId != null) {
+                SubscribeEntity subscribe = subscribeBO.getSubscribeByToUserIdFromUserId(userId, fromUserId).orElse(null);
+                cardDTO.setSubscribe(subscribe);
+            }
+
+            // 댓글 N개
+            int postId = postEntity.getId();
+            List<CommentDTO> commentList = commentBO.generateCommentListByPostId(postId);
+            cardDTO.setCommentList(commentList);
 
             // !!!!!!!!!!!!! list에 꼭 담기
             cardList.add(cardDTO);
@@ -57,15 +71,62 @@ public class TimelineBO {
 
         for (PostEntity postEntity : myPostList) {
             CardDTO cardDTO = new CardDTO();
+            
+            // 글 1개
             cardDTO.setPost(postEntity);
 
+            // 글쓴이
             int userId = postEntity.getUserId();
             UserEntity user = userBO.getUserEntityById(userId);
             cardDTO.setUser(user);
+
+            // 댓글 N개
+            int postId = postEntity.getId();
+            List<CommentDTO> commentList = commentBO.generateCommentListByPostId(postId);
+            cardDTO.setCommentList(commentList);
 
             cardList.add(cardDTO);
         }
 
         return cardList;
     }
+
+    public List<CardDTO> generateSubscribeCardList(int fromUserId) {
+        List<CardDTO> cardList = new ArrayList<>();
+
+        // 구독 목록 가져옴
+        List<SubscribeEntity> subscribeList = subscribeBO.getSubscribeByFromUserId(fromUserId, "N");
+
+        // 글 목록 가져옴
+        List<PostEntity> postList = postBO.getPostList();
+
+        for (PostEntity postEntity : postList) {
+            CardDTO cardDTO = new CardDTO();
+
+            for (SubscribeEntity subscribeEntity : subscribeList) {
+                int postUserId = postEntity.getUserId();
+                int toUserId = subscribeEntity.getToUserId();
+                if (toUserId == postUserId) {
+                    cardDTO.setPost(postEntity);
+                } else {
+                    return;
+                }
+            }
+
+            // 글쓴이
+            int userId = postEntity.getUserId();
+            UserEntity user = userBO.getUserEntityById(userId);
+            cardDTO.setUser(user);
+
+            // 댓글 N개
+            int postId = postEntity.getId();
+            List<CommentDTO> commentList = commentBO.generateCommentListByPostId(postId);
+            cardDTO.setCommentList(commentList);
+
+            cardList.add(cardDTO);
+        }
+
+        return cardList;
+    }
+
 }

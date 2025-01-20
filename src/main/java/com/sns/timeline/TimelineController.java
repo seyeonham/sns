@@ -61,4 +61,22 @@ public class TimelineController {
         return "timeline/myPost";
     }
 
+    @GetMapping("subscribe-post-view")
+    public String subscribePostView(Model model, HttpSession session) {
+
+        Integer fromUserId = (Integer)session.getAttribute("userId");
+        if (fromUserId == null) {
+            return "user/signIn";
+        }
+
+        List<CardDTO> subscribeCardList = timelineBO.generateSubscribeCardList(fromUserId);
+        if (subscribeCardList.size() > 0) {
+            model.addAttribute("subscribeCardList", subscribeCardList);
+        } else {
+            model.addAttribute("subscribeCardList", null);
+        }
+
+        return "timeline/subscribePost";
+    }
+
 }
