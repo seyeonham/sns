@@ -47,9 +47,9 @@
                     </div>
 
                     <!-- 글 -->
-                    <div class="card-post m-3">
+                    <div class="card-post m-2">
                         <a class="user-btn" th:href="|/timeline/user-post-view?userId=${subscribeCard.post.userId}|">
-                            <span class="font-weight-bold" th:text="${subscribeCard.user.name}">글쓴이</span>
+                            <span class="font-weight-bold ml-1" th:text="${subscribeCard.user.name}">글쓴이</span>
                         </a>
                         <span th:text="${subscribeCard.post.content}">글 내용입니다!!!!</span>
                     </div>

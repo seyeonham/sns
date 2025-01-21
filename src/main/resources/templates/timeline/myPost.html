@@ -54,9 +54,9 @@
                     </div>
 
                     <!-- 글 -->
-                    <div class="card-post m-3">
+                    <div class="card-post m-1">
                         <a class="user-btn" th:href="|/timeline/user-post-view?userId=${myCard.post.userId}|">
-                            <span class="font-weight-bold" th:text="${myCard.user.name}">글쓴이</span>
+                            <span class="font-weight-bold ml-1" th:text="${myCard.user.name}">글쓴이</span>
                         </a>
                         <span th:text="${myCard.post.content}">글 내용입니다!!!!</span>
                     </div>

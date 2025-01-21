@@ -17,6 +17,16 @@
                             <a class="user-btn" th:href="|/timeline/user-post-view?userId=${userCard.post.userId}|">
                                 <span class="font-weight-bold" th:text="${userCard.user.name}"></span>
                             </a>
+                            <!-- 구독하기, 구독중 버튼 -->
+                            <span th:if="${session.userId} != null and ${session.userId} != ${userCard.post.userId}">
+                                <span th:if="${userCard.subscribe} != null">
+                                    <button type="button" class="btn subscribe-btn" th:if="${userCard.subscribe.deleteYn} == 'Y'" th:data-user-id="${userCard.post.userId}"><small>구독하기</small></button>
+                                    <button type="button" class="btn unsubscribe-btn" th:if="${userCard.subscribe.deleteYn} == 'N'" th:data-user-id="${userCard.post.userId}"><small>구독중</small></button>
+                                </span>
+                                <span th:if="${userCard.subscribe} == null">
+                                    <button type="button" class="btn subscribe-btn" th:data-user-id="${userCard.post.userId}"><small>구독하기</small></button>
+                                </span>
+                            </span>
                         </div>
                         <a href="#" class="more-btn">
                             <img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
@@ -37,9 +47,9 @@
                     </div>
 
                     <!-- 글 -->
-                    <div class="card-post m-3">
+                    <div class="card-post m-2">
                         <a class="user-btn" th:href="|/timeline/user-post-view?userId=${userCard.post.userId}|">
-                            <span class="font-weight-bold" th:text="${userCard.user.name}">글쓴이</span>
+                            <span class="font-weight-bold ml-1" th:text="${userCard.user.name}">글쓴이</span>
                         </a>
                         <span th:text="${userCard.post.content}">글 내용입니다!!!!</span>
                     </div>
