@@ -49,7 +49,7 @@ public class TimelineController {
 
         Integer myId = (Integer)session.getAttribute("userId");
         if (myId == null) {
-            return "redirect:user/sign-in-view";
+            return "redirect:/user/sign-in-view";
         }
 
         List<CardDTO> myCardList = timelineBO.generateMyCardList(myId);
@@ -97,6 +97,24 @@ public class TimelineController {
         }
 
         return "timeline/userPost";
+    }
+
+    @GetMapping("/like-post-view")
+    public String likePostView(Model model, HttpSession session) {
+
+        Integer fromUserId = (Integer)session.getAttribute("userId");
+        if (fromUserId == null) {
+            return "redirect:/user/sign-in-view";
+        }
+
+        List<CardDTO> likeCardList = timelineBO.generateLikeCardList(fromUserId);
+        if (likeCardList.size() > 0) {
+            model.addAttribute("likeCardList", likeCardList);
+        } else {
+            model.addAttribute("likeCardList", null);
+        }
+
+        return "timeline/likePost";
     }
 
 }

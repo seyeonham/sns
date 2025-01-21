@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
 @Mapper
@@ -20,6 +21,8 @@ public interface LikeMapper {
     public int selectLikeCountByUserIdPostId(
             @Param("userId") int userId,
             @Param("postId") int postId);
+
+    public List<Like> selectLikeByUserId(int userId);
 
     // insert
     public int insertLikeByUserIdPostId(

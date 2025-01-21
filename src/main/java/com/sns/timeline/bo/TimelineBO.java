@@ -65,7 +65,7 @@ public class TimelineBO {
 
             // 좋아요 하트 여부
             if (fromUserId != null) {
-                boolean filledLike = likeBO.getLikeCountByUserIdPostIdFilledLike(userId, postId);
+                boolean filledLike = likeBO.getLikeCountByUserIdPostIdFilledLike(fromUserId, postId);
                 cardDTO.setFilledLike(filledLike);
             }
 
@@ -97,6 +97,15 @@ public class TimelineBO {
             int postId = postEntity.getId();
             List<CommentDTO> commentList = commentBO.generateCommentListByPostId(postId);
             cardDTO.setCommentList(commentList);
+
+            // 좋아요 개수
+            int likeCount = likeBO.getLikeCountByPostId(postId);
+            cardDTO.setLikeCount(likeCount);
+
+            // 좋아요 하트 여부
+            boolean filledLike = likeBO.getLikeCountByUserIdPostIdFilledLike(myId, postId);
+            cardDTO.setFilledLike(filledLike);
+
 
             cardList.add(cardDTO);
         }
@@ -136,7 +145,14 @@ public class TimelineBO {
                     SubscribeEntity subscribe = subscribeBO.getSubscribeByToUserIdFromUserId(userId, fromUserId).orElse(null);
                     cardDTO.setSubscribe(subscribe);
 
-                    // 좋아요
+                    // 좋아요 개수
+                    int likeCount = likeBO.getLikeCountByPostId(postId);
+                    cardDTO.setLikeCount(likeCount);
+
+                    // 좋아요 하트 여부
+                    boolean filledLike = likeBO.getLikeCountByUserIdPostIdFilledLike(fromUserId, postId);
+                    cardDTO.setFilledLike(filledLike);
+
 
                     cardList.add(cardDTO);
                 }
@@ -172,7 +188,63 @@ public class TimelineBO {
             SubscribeEntity subscribe = subscribeBO.getSubscribeByToUserIdFromUserId(userId, fromUserId).orElse(null);
             cardDTO.setSubscribe(subscribe);
 
+            // 좋아요 개수
+            int likeCount = likeBO.getLikeCountByPostId(postId);
+            cardDTO.setLikeCount(likeCount);
+
+            // 좋아요 하트 여부
+            boolean filledLike = likeBO.getLikeCountByUserIdPostIdFilledLike(fromUserId, postId);
+            cardDTO.setFilledLike(filledLike);
+
             cardList.add(cardDTO);
+        }
+
+        return cardList;
+    }
+
+    public List<CardDTO> generateLikeCardList(int fromUserId) {
+        List<CardDTO> cardList = new ArrayList<>();
+
+        // 좋아요 목록 가져옴
+        List<Like> likeList = likeBO.getLikeByUserId(fromUserId);
+
+        // 글 목록 가져옴
+        List<PostEntity> postList = postBO.getPostList();
+
+        for (PostEntity postEntity : postList) {
+            CardDTO cardDTO = new CardDTO();
+
+            for (Like like : likeList) {
+                int postId = postEntity.getId();
+                int likePostId = like.getPostId();
+                if (postId == likePostId) {
+                    cardDTO.setPost(postEntity);
+
+                    // 글쓴이
+                    int userId = postEntity.getUserId();
+                    UserEntity user = userBO.getUserEntityById(userId);
+                    cardDTO.setUser(user);
+
+                    // 댓글 N개
+                    List<CommentDTO> commentList = commentBO.generateCommentListByPostId(postId);
+                    cardDTO.setCommentList(commentList);
+
+                    // 구독
+                    SubscribeEntity subscribe = subscribeBO.getSubscribeByToUserIdFromUserId(userId, fromUserId).orElse(null);
+                    cardDTO.setSubscribe(subscribe);
+
+                    // 좋아요 개수
+                    int likeCount = likeBO.getLikeCountByPostId(postId);
+                    cardDTO.setLikeCount(likeCount);
+
+                    // 좋아요 하트 여부
+                    boolean filledLike = likeBO.getLikeCountByUserIdPostIdFilledLike(fromUserId, postId);
+                    cardDTO.setFilledLike(filledLike);
+
+
+                    cardList.add(cardDTO);
+                }
+            }
         }
 
         return cardList;

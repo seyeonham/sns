@@ -33,6 +33,18 @@
             AND `postId` = #{postId}
             AND `filledLike` = 1
     </select>
+    <select id="selectLikeByUserId" parameterType="int">
+        SELECT
+            `userId`
+            ,`postId`
+            ,`filledLike`
+            ,`createdAt`
+        FROM
+            `like`
+        WHERE
+            `userId` = #{userId}
+            AND `filledLike` = 1
+    </select>
     <insert id="insertLikeByUserIdPostId" parameterType="map">
         INSERT INTO `like`
         (

@@ -5,6 +5,7 @@ import com.sns.like.mapper.LikeMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -43,5 +44,9 @@ public class LikeBO {
         } else {
             return false;
         }
+    }
+
+    public List<Like> getLikeByUserId(int fromUserId) {
+        return likeMapper.selectLikeByUserId(fromUserId);
     }
 }
