@@ -14,25 +14,38 @@
             `userId` = #{userId}
             AND `postId` = #{postId}
     </select>
-    <select id="selectLikeCountByPostId" parameterType="int" resultType="int">
+    <!-- 카운트 쿼리를 하나로 합친다 -->
+    <select id="selectLikeCountByPostIdOrUserId" parameterType="map" resultType="int">
         SELECT
-            COUNT(*)
+            COUNT(1)
         FROM
             `like`
         WHERE
             `postId` = #{postId}
             AND `filledLike` = 1
+            <if test="userId != null">
+            AND `userId` = #{userId}
+            </if>
     </select>
-    <select id="selectLikeCountByUserIdPostId" parameterType="map" resultType="int">
-        SELECT
-            COUNT(*)
-        FROM
-            `like`
-        WHERE
-            `userId` = #{userId}
-            AND `postId` = #{postId}
-            AND `filledLike` = 1
-    </select>
+<!--    <select id="selectLikeCountByPostId" parameterType="int" resultType="int">-->
+<!--        SELECT-->
+<!--            COUNT(*)-->
+<!--        FROM-->
+<!--            `like`-->
+<!--        WHERE-->
+<!--            `postId` = #{postId}-->
+<!--            AND `filledLike` = 1-->
+<!--    </select>-->
+<!--    <select id="selectLikeCountByUserIdPostId" parameterType="map" resultType="int">-->
+<!--        SELECT-->
+<!--            COUNT(*)-->
+<!--        FROM-->
+<!--            `like`-->
+<!--        WHERE-->
+<!--            `userId` = #{userId}-->
+<!--            AND `postId` = #{postId}-->
+<!--            AND `filledLike` = 1-->
+<!--    </select>-->
     <select id="selectLikeByUserId" parameterType="int">
         SELECT
             `userId`
@@ -43,6 +56,18 @@
             `like`
         WHERE
             `userId` = #{userId}
+            AND `filledLike` = 1
+    </select>
+    <select id="selectLikeByPostId" parameterType="map">
+        SELECT
+            `userId`
+            ,`postId`
+            ,`filledLike`
+            ,`createdAt`
+        FROM
+            `like`
+        WHERE
+            `postId` = #{postId}
             AND `filledLike` = 1
     </select>
     <insert id="insertLikeByUserIdPostId" parameterType="map">

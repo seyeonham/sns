@@ -56,20 +56,14 @@
 
                     <!-- 좋아요 -->
                     <div class="card-like m-3">
-                        <!-- 로그인 시 -->
-                        <span th:if="${session.userId} != null">
-                            <a href="#" class="like-btn" th:data-post-id="${card.post.id}" th:if="${card.filledLike == false}">
-                                <img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
-                            </a>
-                            <a href="#" class="like-btn" th:data-post-id="${card.post.id}" th:if="${card.filledLike == true}">
-                                <img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width="18" height="18" alt="empty heart">
-                            </a>
-                        </span>
-                        <!-- 비로그인 시 -->
-                        <a href="#" class="like-btn" th:data-post-id="${card.post.id}" th:if="${session.userId} == null">
+                        <a href="#" class="like-btn" th:data-post-id="${card.post.id}" th:if="${card.filledLike == false}">
                             <img src="https://www.iconninja.com/files/214/518/441/heart-icon.png" width="18" height="18" alt="empty heart">
                         </a>
-                        <span th:text="|좋아요 ${card.likeCount}개|">좋아요 개수</span>
+                        <a href="#" class="like-btn" th:data-post-id="${card.post.id}" th:if="${card.filledLike == true}">
+                            <img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width="18" height="18" alt="empty heart">
+                        </a>
+                        <a href="#" class="like-user-btn"><span th:text="|좋아요 ${card.likeCount}개|">좋아요 개수</span></a>
+                        <div th:each="likeUser : ${card.likeUserList}"></div>
                     </div>
 
                     <!-- 글 -->

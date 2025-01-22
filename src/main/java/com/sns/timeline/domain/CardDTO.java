@@ -1,6 +1,5 @@
 package com.sns.timeline.domain;
 
-import com.sns.comment.domain.Comment;
 import com.sns.comment.domain.CommentDTO;
 import com.sns.post.entity.PostEntity;
 import com.sns.subscribe.entity.SubscribeEntity;
@@ -26,6 +25,9 @@ public class CardDTO {
 
     // 좋아요 하트 여부
     private boolean filledLike;
+
+    // 좋아요한 유저
+    private List<UserEntity> likeUserList;
 
     // 구독, 구독해제
     private SubscribeEntity subscribe;

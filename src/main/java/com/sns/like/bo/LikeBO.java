@@ -34,11 +34,11 @@ public class LikeBO {
 
     // select count
     public int getLikeCountByPostId(int postId) {
-        return likeMapper.selectLikeCountByPostId(postId);
+        return likeMapper.selectLikeCountByPostIdOrUserId(null, postId);
     }
 
     public boolean getLikeCountByUserIdPostIdFilledLike(int userId, int postId) {
-        int filledLike = likeMapper.selectLikeCountByUserIdPostId(userId, postId);
+        int filledLike = likeMapper.selectLikeCountByPostIdOrUserId(userId, postId);
         if (filledLike > 0) {
             return true;
         } else {
@@ -48,5 +48,9 @@ public class LikeBO {
 
     public List<Like> getLikeByUserId(int fromUserId) {
         return likeMapper.selectLikeByUserId(fromUserId);
+    }
+
+    public List<Like> getLikeByPostId(int postId) {
+        return likeMapper.selectLikeByPostId(postId);
     }
 }

@@ -12,6 +12,11 @@ header {
     text-decoration: none;
 }
 
+.like-user-btn, .like-user-btn:hover {
+    color:black;
+    text-decoration: none;
+}
+
 .user-btn, .user-btn:hover {
     color:black;
     text-decoration: none;
