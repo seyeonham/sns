@@ -32,6 +32,14 @@ public class UserBO {
         return userRepository.findById(id).orElse(null);
     }
 
+    public UserEntity getUserEntityByIdPassword(int userId, String password) {
+        // 비밀번호 해싱
+        String hashedPassword = EncryptUtils.md5(password);
+
+        // db select
+        return userRepository.findByIdAndPassword(userId, hashedPassword).orElse(null);
+    }
+
     // input: 4개 파라미터
     // output: UserEntity or boolean
     public boolean addUser(String loginId, String password, String name, String email) {

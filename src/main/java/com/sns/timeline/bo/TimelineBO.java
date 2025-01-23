@@ -168,6 +168,14 @@ public class TimelineBO {
                     boolean filledLike = likeBO.getLikeCountByUserIdPostIdFilledLike(fromUserId, postId);
                     cardDTO.setFilledLike(filledLike);
 
+                    // 좋아요한 유저 리스트
+                    List<Like> likeList = likeBO.getLikeByPostId(postId);
+                    List<UserEntity> likeUserList = new ArrayList<>();
+                    for (Like likeUser : likeList) {
+                        likeUserList.add(userBO.getUserEntityById(likeUser.getUserId()));
+                    }
+                    cardDTO.setLikeUserList(likeUserList);
+
                     cardList.add(cardDTO);
                 }
             }
@@ -209,6 +217,14 @@ public class TimelineBO {
             // 좋아요 하트 여부
             boolean filledLike = likeBO.getLikeCountByUserIdPostIdFilledLike(fromUserId, postId);
             cardDTO.setFilledLike(filledLike);
+
+            // 좋아요한 유저 리스트
+            List<Like> likeList = likeBO.getLikeByPostId(postId);
+            List<UserEntity> likeUserList = new ArrayList<>();
+            for (Like likeUser : likeList) {
+                likeUserList.add(userBO.getUserEntityById(likeUser.getUserId()));
+            }
+            cardDTO.setLikeUserList(likeUserList);
 
             cardList.add(cardDTO);
         }
@@ -255,6 +271,13 @@ public class TimelineBO {
                     boolean filledLike = likeBO.getLikeCountByUserIdPostIdFilledLike(fromUserId, postId);
                     cardDTO.setFilledLike(filledLike);
 
+                    // 좋아요한 유저 리스트
+                    List<Like> likeUsers = likeBO.getLikeByPostId(postId);
+                    List<UserEntity> likeUserList = new ArrayList<>();
+                    for (Like likeUser : likeUsers) {
+                        likeUserList.add(userBO.getUserEntityById(likeUser.getUserId()));
+                    }
+                    cardDTO.setLikeUserList(likeUserList);
 
                     cardList.add(cardDTO);
                 }

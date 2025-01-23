@@ -1,3 +1,8 @@
+a, a:hover {
+    color:#000;
+    text-decoration:none;
+}
+
 header {
     height:100px;
     background-color:plum;
@@ -37,6 +42,13 @@ header {
     border-radius: 10px;
 }
 
+.edit-box {
+    height:550px;
+    border: solid 1px;
+    border-color: plum;
+    border-radius: 10px;
+}
+
 .sign-in-btn {
     background-color: plum;
 }
@@ -53,7 +65,7 @@ footer {
     font-size: 12px;
 }
 
-.loginIdCheckBtn {
+.loginIdCheckBtn, .passwordCheckBtn {
     white-space: nowrap;
     background-color: plum;
 }

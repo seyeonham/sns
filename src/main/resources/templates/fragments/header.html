@@ -21,7 +21,7 @@
         <button class="drop"><span th:text="|${session.userName}님|"></span></button>
         <div class="drop-options">
           <a href="/timeline/my-post-view">내 글 보기</a>
-          <a href="#">정보 수정</a>
+          <a th:href="|/user/edit-view?userId=${session.userId}|" class="edit-btn" th:data-user-id="${session.userId}">정보 수정</a>
           <a href="/user/sign-out">로그아웃</a>
         </div>
       </div>
@@ -30,5 +30,28 @@
         <a href="/user/sign-in-view" class="log-in pr-5">로그인</a>
       </div>
     </header>
+    <script>
+<!--      $(function() {-->
+<!--        $("#edit-btn").on("click", function() {-->
+<!--          let userId = $(this).data("user-id");-->
+<!--          // alert(userId);-->
+
+<!--          $.ajax({-->
+<!--            // request-->
+<!--            type:"post"-->
+<!--            , url:"/user/edit-view"-->
+<!--            , data:{"userId":userId}-->
+
+<!--            // response-->
+<!--            , success:function(data) {-->
+
+<!--            }-->
+<!--            , error:function(e) {-->
+<!--            -->
+<!--            }-->
+<!--          });-->
+<!--        });-->
+<!--      });-->
+    </script>
   </th:block>
 </html>

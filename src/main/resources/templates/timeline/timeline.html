@@ -44,7 +44,8 @@
                                 </span>
                             </span>
                         </div>
-                        <a href="#" class="more-btn">
+                        <!-- 더보기 ... (로그인된 사람과 글쓴이 정보가 일치할 때 보이게) -->
+                        <a href="#" class="more-btn" th:if="${session.userId} == ${card.user.id}" data-toggle="modal" data-target="#modal" th:data-post-id="${card.post.id}">
                             <img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
                         </a>
                     </div>
@@ -63,7 +64,9 @@
                             <img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width="18" height="18" alt="empty heart">
                         </a>
                         <a href="#" class="like-user-btn"><span th:text="|좋아요 ${card.likeCount}개|">좋아요 개수</span></a>
-                        <div th:each="likeUser : ${card.likeUserList}"></div>
+                        <span th:each="likeUser : ${card.likeUserList}">
+                            <span th:text="${likeUser.name}"></span>
+                        </span>
                     </div>
 
                     <!-- 글 -->
@@ -107,6 +110,22 @@
             </div>
         </div>
     </section>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal">
+        <!-- modal-sm: 작은 모달창 -->
+        <!-- modal-dialog-centered: 수직 기준 가운데 -->
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content text-center">
+                <div class="py-3 border-bottom">
+                    <a href="#" id="postDel">삭제하기</a>
+                </div>
+                <div class="py-3">
+                    <a href="#" data-dismiss="modal">취소</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         $(function() {
@@ -340,6 +359,46 @@
 
                     , error:function(e) {
                         alert("좋아요가 실행되지 않았습니다. 관리자에게 문의해주세요.");
+                    }
+                });
+            });
+
+            // ... 더보기 클릭 => 1) 모달창 뜸 2) postId를 modal에 넣기
+            $(".more-btn").on("click", function() {
+                let postId = $(this).data("post-id");
+                // alert(postId);
+
+                // 한개만 존재하는 모달창을 재활용하기 위해
+                // modal에 data-post-id를 심어둔다.
+                $("#modal").data("post-id", postId);  // setting
+            });
+
+            // 모달 안에 있는 삭제하기 -> 모달안에는 삭제할 글번호가 있는 상태
+            $("#modal #postDel").on("click", function(e) {
+                e.preventDefault(); // 스크롤 위로 올라감 방지
+
+                let postId = $("#modal").data("post-id");
+                // alert(postId);
+
+                $.ajax({
+                    // request
+                    type:"delete"
+                    , url:"/post/delete"
+                    , data:{"postId":postId}
+
+                    // response
+                    , success:function(data) {
+                        if (data.code == 200) {
+                            location.reload();
+                        } else if (data.code == 403) {
+                            alert(data.error_message);
+                            location.href = "/user/sign-in-view";
+                        } else {
+                            alert("글을 삭제하는데 실패했습니다.");
+                        }
+                    }
+                    , error:function(e) {
+                        alert("글을 삭제하는데 실패했습니다. 관리자에게 문의해주세요.");
                     }
                 });
             });
