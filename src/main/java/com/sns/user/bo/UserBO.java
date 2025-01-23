@@ -6,6 +6,8 @@ import com.sns.user.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class UserBO {
 
@@ -55,5 +57,31 @@ public class UserBO {
         );
 
         return user == null ? false : true;
+    }
+
+    public UserEntity updateUserEntity(String loginId, String newPassword, String name, String email, int userId) {
+        Optional<UserEntity> user = userRepository.findById(userId);
+
+        // 비밀번호 해싱
+        String hashedPassword = "";
+        if (newPassword != "") {
+            hashedPassword = EncryptUtils.md5(newPassword);
+        }
+
+        if (user.isPresent()) {
+            UserEntity userEntity = user.get();
+            userEntity = userEntity.builder()
+                    .id(userId)
+                    .loginId(loginId != "" ? loginId : userEntity.getLoginId())
+                    .password(hashedPassword != "" ? hashedPassword : userEntity.getPassword())
+                    .name(name != "" ? name : userEntity.getName())
+                    .email(email != "" ? email : userEntity.getEmail())
+                    .createdAt(userEntity.getCreatedAt())
+                    .build();
+
+            return userRepository.save(userEntity);
+        }
+
+        return null;
     }
 }

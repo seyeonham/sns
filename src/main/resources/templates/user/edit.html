@@ -149,16 +149,20 @@
                     return false;
                 }
 
-                if ($("#passwordCheckOk").hasClass("d-none") == false) {
-                    if (newPassword != newPasswordCheck) {
+                if (newPassword != "" || newPasswordCheck != "") {
+                    if ($("#passwordCheckFalse").hasClass("d-none") == false) {
+                        alert("기존 비밀번호를 먼저 확인해주세요.");
+                        return false;
+                    } else if ($("#passwordCheckFalse").hasClass("d-none") && $("#passwordCheckOk").hasClass("d-none")) {
+                        alert("기존 비밀번호를 먼저 확인해주세요.");
+                        return false;
+                    } else if (newPassword != newPasswordCheck) {
                         alert("변경할 비밀번호가 일치하지 않습니다.");
                         return false;
                     }
-                } else {
-                    if (!newPassword || !newPasswordCheck) {
-                        alert("기존 비밀번호를 먼저 확인해주세요.");
-                    }
                 }
+
+                return false;
 
                 // json 응답
                 let url = $(this).attr("action");
@@ -167,13 +171,11 @@
                 let params = $(this).serialize();
                 console.log(params);
 
-                return false;
-
                 $.post(url, params)
                 .done(function(data) {
                     if (data.code == 200) {
-                        alert("정보가 수정되었습니다.");
-                        location.href = "/timeline";
+                        alert("정보가 수정되었습니다. 로그인을 다시 해주세요.");
+                        location.href = "/user/sign-out"
                     } else if (data.code == 403) {
                         alert(data.error_message);
                         location.href = "/user/sign-in-view";

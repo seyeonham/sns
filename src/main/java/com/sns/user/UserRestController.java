@@ -119,7 +119,7 @@ public class UserRestController {
 
     @PostMapping("/edit")
     public Map<String, Object> edit(
-            @RequestParam("id") int id,
+            @RequestParam(value = "loginId", required = false) String loginId,
             @RequestParam(value = "newPassword", required = false) String newPassword,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "email", required = false) String email,
@@ -134,6 +134,14 @@ public class UserRestController {
             return result;
         }
 
+        UserEntity user = userBO.updateUserEntity(loginId, newPassword, name, email, userId);
+        if (user != null) {
+            result.put("code", 200);
+            result.put("result", "성공");
+        } else {
+            result.put("code", 500);
+            result.put("error_message", "정보 수정에 실패했습니다.");
+        }
         return result;
     }
 }
