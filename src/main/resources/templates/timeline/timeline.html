@@ -45,7 +45,7 @@
                             </span>
                         </div>
                         <!-- 더보기 ... (로그인된 사람과 글쓴이 정보가 일치할 때 보이게) -->
-                        <a href="#" class="more-btn" th:if="${session.userId} == ${card.user.id}" data-toggle="modal" data-target="#modal" th:data-post-id="${card.post.id}">
+                        <a href="#" class="more-btn" th:if="${session.userId} == ${card.user.id}" data-toggle="modal" data-target="#delModal" th:data-post-id="${card.post.id}">
                             <img src="https://www.iconninja.com/files/860/824/939/more-icon.png" width="30">
                         </a>
                     </div>
@@ -63,10 +63,12 @@
                         <a href="#" class="like-btn" th:data-post-id="${card.post.id}" th:if="${card.filledLike == true}">
                             <img src="https://www.iconninja.com/files/527/809/128/heart-icon.png" width="18" height="18" alt="empty heart">
                         </a>
-                        <a href="#" class="like-user-btn"><span th:text="|좋아요 ${card.likeCount}개|">좋아요 개수</span></a>
-                        <span th:each="likeUser : ${card.likeUserList}">
-                            <span th:text="${likeUser.name}"></span>
-                        </span>
+                        <a href="#" class="like-user-btn" data-toggle="modal" data-target="#likeModal" th:data-post-id="${card.post.id}">
+                            <span th:text="|좋아요 ${card.likeCount}개|">좋아요 개수</span>
+                        </a>
+                        <div class="like-user-data d-none" th:data-post-id="${card.post.id}">
+                            <span th:each="likeUser : ${card.likeUserList}" th:text="${likeUser.name}"></span>
+                        </div>
                     </div>
 
                     <!-- 글 -->
@@ -111,8 +113,8 @@
         </div>
     </section>
 
-    <!-- Modal -->
-    <div class="modal fade" id="modal">
+    <!-- 글 삭제 Modal -->
+    <div class="modal fade" id="delModal">
         <!-- modal-sm: 작은 모달창 -->
         <!-- modal-dialog-centered: 수직 기준 가운데 -->
         <div class="modal-dialog modal-sm modal-dialog-centered">
@@ -122,6 +124,25 @@
                 </div>
                 <div class="py-3">
                     <a href="#" data-dismiss="modal">취소</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 좋아요한 유저 Modal -->
+    <div class="modal fade" id="likeModal">
+        <div class="modal-dialog modal-dialog-centered modal-sm modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">좋아요한 유저</h5>
+                </div>
+                <div class="modal-body">
+                    <div id="likeUserContainer">
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
                 </div>
             </div>
         </div>
@@ -370,14 +391,14 @@
 
                 // 한개만 존재하는 모달창을 재활용하기 위해
                 // modal에 data-post-id를 심어둔다.
-                $("#modal").data("post-id", postId);  // setting
+                $("#delModal").data("post-id", postId);  // setting
             });
 
             // 모달 안에 있는 삭제하기 -> 모달안에는 삭제할 글번호가 있는 상태
-            $("#modal #postDel").on("click", function(e) {
+            $("#delModal #postDel").on("click", function(e) {
                 e.preventDefault(); // 스크롤 위로 올라감 방지
 
-                let postId = $("#modal").data("post-id");
+                let postId = $("#delModal").data("post-id");
                 // alert(postId);
 
                 $.ajax({
@@ -401,6 +422,27 @@
                         alert("글을 삭제하는데 실패했습니다. 관리자에게 문의해주세요.");
                     }
                 });
+            });
+
+            // 좋아요한 유저 버튼
+            $(".like-user-btn").on("click", function() {
+                let postId = $(this).data("post-id");
+
+                // modal의 body를 채울 container
+                let likeUserContainer = $("#likeUserContainer");
+
+                // container 비우기
+                likeUserContainer.empty();
+
+                // 해당 postId의 유저 데이터 가져오기
+                $(`.like-user-data[data-post-id="${postId}"] span`).each(function() {
+                    likeUserContainer.append(`<div class="py-3 border-bottom">${$(this).text()}</div>`);
+                });
+
+                // 데이터가 없을 경우 처리
+                if (!likeUserContainer.children().length) {
+                    likeUserContainer.append('<p class="text-secondary">좋아요한 유저가 없습니다.</p>');
+                }
             });
         });
     </script>
